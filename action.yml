@@ -1,0 +1,18 @@
+name: 'Applura deploy'
+description: 'GitHub action for deploying applura projects'
+inputs:
+  key:
+    description: 'Deploy key for applura project'
+    required: true
+    default: 'key'
+  folder:
+    description: 'Deploy folder for applura project'
+    required: true
+    default: './dist'
+  note:
+    description: 'Deploy release note'
+    required: true
+    default: 'GitHub action deployment'
+runs:
+  using: 'node20'
+  main: './dist/index.js'
