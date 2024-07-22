@@ -2,7 +2,7 @@
   "name": "deploy",
   "version": "1.0.0",
   "type": "module",
-  "description": "GitHub action for deploying Applura projects",
+  "description": "GitHub action that deploys an Applura project front end",
   "main": "index.js",
   "author": "Applura, Inc",
   "license": "MIT",
