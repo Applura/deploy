@@ -1,0 +1,17 @@
+name: 'Applura deploy'
+description: 'Deploys an Applura project front end'
+inputs:
+  key:
+    description: 'Secret deploy key'
+    required: true
+  directory:
+    description: 'The directory which contains the front-end to deploy'
+    required: true
+    default: './dist'
+  note:
+    description: 'Deploy release note'
+    required: true
+    default: 'GitHub action deployment'
+runs:
+  using: 'node20'
+  main: './dist/index.js'
