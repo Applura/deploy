@@ -4,7 +4,7 @@ import { stdin, stdout, stderr } from "node:process";
 
 try {
     const key = core.getInput('key');
-    const deployFolder = core.getInput('folder');
+    const deployFolder = core.getInput('directory');
     const releaseNote = core.getInput('note');
     const config = {
         serverURL: 'https://api.ops.applura.app'

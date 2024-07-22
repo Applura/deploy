@@ -1,12 +1,12 @@
 name: 'Applura deploy'
-description: 'GitHub action for deploying applura projects'
+description: 'GitHub action for deploying Applura projects'
 inputs:
   key:
     description: 'Deploy key for applura project'
     required: true
     default: 'key'
-  folder:
-    description: 'Deploy folder for applura project'
+  directory:
+    description: 'The directory which will deployed to the Applura project'
     required: true
     default: './dist'
   note:
