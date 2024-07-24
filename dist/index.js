@@ -57814,7 +57814,7 @@ class DeployKey {
    */
   static async getProject(key, { config }) {
     if (typeof key === "object") {
-      key = key.read()
+      key = key.read();
     }
     const response = await fetch(config.serverURL, {
       headers: {
@@ -58022,24 +58022,29 @@ async function apiDeploy(
   config,
 ) {
   if (typeof key === "object") {
-    key = key.read()
+    key = key.read();
   }
   const project = await DeployKey.getProject(key, { config });
   const releaseOverviewLink = project.links.get("releases").href;
   let releaseOverview = await getLinkData(key, releaseOverviewLink, { config });
   const createFormLink = releaseOverview.links.get("create-form").href;
-  const createFrom = await getLinkData(key, createFormLink, { config });
+  const createForm = await getLinkData(key, createFormLink, { config });
   const testDir = (0,external_node_fs_namespaceObject.mkdtempSync)(`${(0,external_node_os_namespaceObject.tmpdir)()}${external_node_path_namespaceObject.sep}`);
+  const filepath = `${testDir}${external_node_path_namespaceObject.sep}deploy.zip`;
   await printWhile(
-      stderr,
-      {
-        pending: "Creating deploy file…",
-        resolved: "Deploy file creation complete.\n",
-        rejected: "Deploy file creation failed.\n",
-      },
-      (0,bestzip.zip)({source: deployFolder, destination: `${testDir}${external_node_path_namespaceObject.sep}deploy.zip`}),
+    stderr,
+    {
+      pending: "Creating deployment artifact…",
+      resolved: `Deployment artifact created. (${filepath})\n`,
+      rejected: "Deployment artifact creation failed.\n",
+    },
+    (0,bestzip.zip)({
+      cwd: deployFolder,
+      source: `.${external_node_path_namespaceObject.sep}/*`,
+      destination: filepath,
+    }),
   );
-  const uploadLink = createFrom.links.get(
+  const uploadLink = createForm.links.get(
     "https://docs.applura.com/operations/link-relations/upload-frontend-release",
   ).href;
   const stats = (0,external_node_fs_namespaceObject.statSync)(`${testDir}${external_node_path_namespaceObject.sep}deploy.zip`);
