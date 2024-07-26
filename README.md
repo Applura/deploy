@@ -1,29 +1,41 @@
-Deploy action
----
+## applura/deploy
 
-## Overview
+This repository contains a GitHub action that deploys a front-end directory to a project hosted on the [Applura platform][applura].
 
-This repository contains deploy GitHub action for the Applura platform.
+Use it to automatically deploy changes via a [GitHub workflow][gh-workflow].
 
-Use it to setup automatic deployment process via GitHub workflows.
+### Usage
 
-## Usage
+#### Generate a deploy key
 
-Create the deploy key on drupal instance under `Administration -> Application -> Deploy keys` 
+First, navigate to your Applura project and generate a deploy key. Deploy keys can be found via the Applura web interface by navigating to _Application > Deploy keys_.
 
-To add a deploy key generated via the web interface to GutHub navigate to `/settings/secrets/actions` and create new repository secret
+#### Set up a repository secret
 
-To add action in your workflow use next snippet:
+Once you have copied your new deploy key. Add it to you GitHub repository via the GitHub web interface by navigating to _Settings > Secrets and variables > Actions > New repository secret_.
+
+Name the secret `APPLURA_DEPLOY_KEY`.
+
+#### Configure the action
+
+Finally, add the following step to your workflow using this snippet:
 
 ```yml
-- name: set commit hash
-    run: echo "commit_hash=Commit hash $(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_ENV
+- name: Set release note
+    run: echo "release_note=Git commit $(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_ENV
 - name: Deploy to Applura
   uses: applura/deploy@1.0.1
   with:
     key: ${{ secrets.APPLURA_DEPLOY_KEY }}
-    note: ${{ env.commit_hash }}
-    directory: ./build
+    note: ${{ env.release_note }}
+    directory: ./dist
 ```
 
-Where `key` is the generated deploy key, `note` is the release note associated with release (in this example it contains commit has which triggered action) and `directory` is the application root directory we want to deploy.
+Where:
+
+- `key` is the generated deploy key
+- `note` is the release note associated with release (in this example it contains commit has which triggered action)
+- `directory` is the fully built and compiled directory of front-end files to be deployed
+
+[applura]: https://www.applura.com
+[gh-workflow]: https://docs.github.com/en/actions/using-workflows/about-workflows
